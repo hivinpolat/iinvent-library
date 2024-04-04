@@ -39,12 +39,10 @@ export class UserService {
                 name: borrow.book.name
             };
 
-            // Kitabın kullanıcı puanını al
             if (borrow.score) {
                 bookData.userScore = borrow.score;
             }
 
-            // Kitap iade edilmişse "past" kategorisine, aksi halde "present" kategorisine ekle
             if (borrow.returnDate) {
                 pastBooks.push(bookData);
             } else {

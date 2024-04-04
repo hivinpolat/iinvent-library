@@ -36,7 +36,12 @@ export class BookController {
     async createBook(req: Request, res: Response) {
         try {
             const bookData = req.body;
-            const newBook = await this.bookService.createBook(bookData);
+            const {name} = req.body;
+            if (!name) {
+                res.status(400).send('Name is required');
+                return;
+            }
+            const newBook = await this.bookService.createBook(name);
             res.status(201).json(newBook);
         } catch (error) {
             console.error('Error creating book:', error);

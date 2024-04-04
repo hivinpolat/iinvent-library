@@ -37,56 +37,51 @@ export class BookService {
         return {
             id: book.id,
             name: book.name,
-            score: averageScore.toFixed(2) // Ortalama puanı 2 ondalık basamağa yuvarla
+            score: averageScore.toFixed(2)
         };
     }
 
 
     async createBook(bookData: any) {
         try {
-            // Veritabanına yeni bir kitap ekleyin
+
             const newBook = await prisma.book.create({
                 data: {
-                    name: bookData.name // Gönderilen kitap verisinin adını kullanın
+                    name: bookData.name
                 }
             });
 
-            return newBook; // Oluşturulan kitabı döndürün
+            return newBook;
         } catch (error) {
             console.error('Error creating book:', error);
-            throw new Error('Failed to create book'); // Hata durumunda bir hata fırlatın
+            throw new Error('Failed to create book');
         }
     }
 
 
     async borrowBook(userId: string, bookId: string) {
         try {
-            // userId ve bookId değerlerini kontrol edin ve uygun olup olmadıklarını doğrulayın
             const parsedUserId = parseInt(userId);
             const parsedBookId = parseInt(bookId);
 
-            // Eğer değerler uygunsa devam edin
             if (isNaN(parsedUserId) || isNaN(parsedBookId)) {
                 throw new Error('Invalid userId or bookId');
             }
-
-            // Kullanıcının belirli bir kitabı ödünç aldığı tarihi kaydetmek için Borrow modelini kullanarak veritabanına yeni bir giriş oluşturun
             const borrowedBook = await prisma.borrow.create({
                 data: {
-                    borrowDate: new Date(), // Ödünç alma tarihini şu anki zamana ayarlayın
+                    borrowDate: new Date(),
                     user: {
-                        connect: {id: parsedUserId} // Kullanıcıyı kullanıcı kimliğiyle bağlayın
+                        connect: {id: parsedUserId}
                     },
                     book: {
-                        connect: {id: parsedBookId} // Kitabı kitap kimliğiyle bağlayın
+                        connect: {id: parsedBookId}
                     }
                 }
             });
-
-            return borrowedBook; // Ödünç alınan kitabı döndürün
+            return borrowedBook;
         } catch (error) {
             console.error('Error borrowing book:', error);
-            throw new Error('Failed to borrow book'); // Hata durumunda bir hata fırlatın
+            throw new Error('Failed to borrow book');
         }
     }
 

@@ -37,19 +37,16 @@ export class UserController {
             const {name} = req.body;
             console.log(name);
             console.log(req.body);
-            // İstek gövdesi tanımsız ise, isteği hatalı olarak işaretle ve hatayı döndür
             if (!req.body) {
                 res.status(400).send('Request body is empty');
                 return;
             }
 
-            // 'name' özelliği tanımlı değilse, isteği hatalı olarak işaretle ve hatayı döndür
             if (!name) {
                 res.status(400).send('Name is required');
                 return;
             }
 
-            // 'name' özelliği tanımlı ise, yeni bir kullanıcı oluştur
             const user = await this.userService.createUser(name);
             res.status(201).json(user);
         } catch (error) {
